@@ -5,12 +5,12 @@ from . service_provider import Service_provider
 
 class Service(Base):
     __tablename__ = 'services'
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
+    id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String, nullable=False)
     description = Column(Text)
-    value = Column(Float)
-    delivery = Column(Boolean)
-    provider_id = Column(Integer, ForeignKey('service_providers.id'))
+    value = Column(Float, nullable=False)
+    delivery = Column(Boolean, nullable=False)
+    provider_id = Column(Integer, ForeignKey('service_providers.id'), nullable=False)
 
     def __repr__(self):
         return "<Service(name='%s', description='%s', value='%s', delivery='%s', provider_id=''%s)>" % (

@@ -9,6 +9,7 @@ gunicorn = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
 python-dotenv = "*"
+passlib = "*"
 
 [dev-packages]
 

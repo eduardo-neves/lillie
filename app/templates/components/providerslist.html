@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{ loginString }}</h1>
+    <table class="table table-striped table-responsive table-bordered">
+        <tbody>
+            {% for provider in providers  %}
+                        <tr>
+                            <td>{{ provider.id }}</td>
+                            <td>{{ provider.name }}</td>
+                            <td>{{ provider.address }}</td>
+                            <td><a href='/services/{{ provider.id }}'>Serviços</a></td>
+                        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

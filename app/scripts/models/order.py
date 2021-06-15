@@ -7,7 +7,8 @@ from . user import User
 
 class Order(Base):
     __tablename__ = 'orders'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    provider_id = Column(Integer, ForeignKey('service_providers.id'))
-    service_id = Column(Integer, ForeignKey('services.id'))
+    id = Column(Integer, primary_key=True, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    provider_id = Column(Integer, ForeignKey('service_providers.id'), nullable=False)
+    service_id = Column(Integer, ForeignKey('services.id'), nullable=False)
+    status = Column(Integer, nullable=False)

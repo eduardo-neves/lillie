@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+    <table class="table table-striped table-responsive table-bordered">
+        <tbody>
+            {% for service in services %}
+                        <tr>
+                            <form action = "/checkout/" method="POST">
+                                <td>{{ service.name }}</td>
+                                <td>{{ service.description }}</td>
+                                <td>{{ service.value }}</td>
+                                {% if service.delivery %}
+                                <td><input type="checkbox">Leva & Entrega</td></td>
+                                {% else %}
+                                <td><input type="checkbox" disabled>Leva & Entrega</td></td>
+                                {% endif %}
+                                <input type="hidden" name="service_id" value="{{ service.id }}">
+                                <td><button type="submit" class="btn btn-primary">Solicitar</button></td>
+                            </form>
+                        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
