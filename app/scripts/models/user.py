@@ -10,11 +10,11 @@ class User(Base):
     document = Column(String)
     email = Column(String, nullable=False)
     password = Column(String, nullable=False)
-    phone = Column(Integer, nullable=False)
+    phone = Column(String, nullable=False)
     pj = Column(Boolean)
     address = Column(String, nullable=False)
     address2 = Column(String)
-    cep = Column(Integer, nullable=False)
+    cep = Column(String, nullable=False)
 
     def __repr__(self):
         return "<User(name='%s', document='%s', email='%s', phone='%s', pj='%s', address='%s', address2='%s', cep='%s')>" % (

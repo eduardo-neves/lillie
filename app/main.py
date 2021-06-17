@@ -1,5 +1,7 @@
+from app.scripts.functions.rota import rota
 from flask import Flask, request, render_template, session, url_for, redirect
 import app.scripts.models
+import app.scripts.functions
 import os
 from dotenv import load_dotenv
 
@@ -17,6 +19,9 @@ def home_view():
         else:
                 from app.scripts.fetchProvider import fetchProvider
                 providers = fetchProvider()
+                for provider in providers:
+                        distance = rota(session['user_cep'], provider.cep)
+                        provider.distance = distance
                 loginString = "Sucessful login and authentication on " + session['user_email']
                 return render_template('components/providerslist.html', providers=providers, loginString=loginString)
                 
@@ -51,6 +56,7 @@ def login():
                 if user.verifyPassword(request.form['user_password']) == True:
                         session['user_id'] = user.id
                         session['user_email'] = user.email
+                        session['user_cep'] = user.cep
                         return redirect(url_for('home_view'))
                 else:
                         return str(user.verifyPassword(request.form['user_password']))

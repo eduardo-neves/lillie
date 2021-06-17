@@ -9,11 +9,13 @@ class Service_provider(Base):
     document = Column(String, nullable=False)
     email = Column(String, nullable=False)
     password = Column(String, nullable=False)
-    phone = Column(Integer, nullable=False)
+    phone = Column(String, nullable=False)
     address = Column(String, nullable=False)
     address2 = Column(String)
-    cep = Column(Integer, nullable=False)
+    cep = Column(String, nullable=False)
     rating = Column(Float, nullable=False)
+
+    distance = Column(String)
 
     def __repr__(self):
         return "{Service_provider(id='%s', name='%s', document='%s', email='%s', phone='%s', address='%s', address2='%s', cep='%s', rating='%s')}" % (
