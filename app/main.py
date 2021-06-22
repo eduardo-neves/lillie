@@ -1,8 +1,5 @@
 ## IMPORTS DEPENDENCIES
 from flask import Flask, request, render_template, session, sessions, url_for, redirect, flash
-import app.scripts
-import app.scripts.models
-import app.scripts.functions
 import os
 from dotenv import load_dotenv
 
@@ -43,7 +40,7 @@ def homeView():
 def provider(id):
 
         try:
-                session['user_email'] != None
+                session['user_id'] != None
         except KeyError:
                 return redirect(url_for('loginUser'))
         else:        
@@ -55,7 +52,7 @@ def provider(id):
 def service(id):
 
         try:
-                session['user_email'] != None
+                session['user_id'] != None
         except KeyError:
                 return redirect(url_for('loginUser'))
         else:
@@ -74,7 +71,7 @@ def service(id):
 def orders():
 
         try:
-                session['user_email'] != None
+                session['user_id'] != None
         except KeyError:
                 return redirect(url_for('loginUser'))
         else:
@@ -103,7 +100,7 @@ def profile():
 def checkout(id):
 
         try:
-                session['user_email'] != None
+                session['user_id'] != None
         except KeyError:
                 return redirect(url_for('login'))
         else:
@@ -125,9 +122,9 @@ def checkout_processing():
                 return redirect(url_for('homeView'))
         else:
                 from app.scripts.daoOrder import createOrder
-                createOrder(session['user_id'], request.form['provider_id'], request.form['service_id'], request.form['delivery'])
+                orderId = createOrder(session['user_id'], request.form['provider_id'], request.form['service_id'], request.form['delivery'])
 
-                return "Something "
+                return render_template('components/checkoutSuccess.html', orderId=orderId)
 
 @app.route('/user/login', methods = ['GET', 'POST'])
 def loginUser():
@@ -190,7 +187,7 @@ def homeViewProvider():
         except KeyError:
                 return redirect(url_for('loginProvider'))
         else:
-                return "Logged in as provider"
+                return redirect(url_for('ordersProvider'))
 
 @app.route("/provider/orders")
 def ordersProvider():

@@ -1,4 +1,4 @@
-from sqlalchemy.sql.expression import select
+from sqlalchemy.sql.expression import select, insert
 from datetime import datetime
 from . models.database.declarative import Base, Session, Engine
 from . models.order import Order
@@ -12,18 +12,18 @@ def createOrder(user_id, provider_id, service_id, delivery):
     else:
         def_delivery = False
     session = Session()
-    date = datetime.now()
-    order = Order(
-        user_id=user_id, 
-        provider_id=provider_id, 
-        service_id=service_id, 
-        status=0, 
-        placed_on=date,
-        updated_on=date,
-        delivery=def_delivery
-        )
-    session.add(order)
+    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    stmt = insert(Order).values(user_id=user_id, provider_id=provider_id, service_id=service_id, status=1, placed_on=date, updated_on=date, delivery=def_delivery).returning(Order.id)
+
+    for lines in session.execute(stmt).fetchall():
+        for line in lines:
+            orderId = line
+
     session.commit()
+
+    return orderId
+
 
 def fetchOrdersProvider(provider_id):
 
@@ -51,7 +51,7 @@ def fetchOrdersUser(user_id):
 
 def updateOrder(order_id, status):
     try:
-        date = datetime.now()
+        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         session = Session()
         for order in session.query(Order).order_by(Order.id).filter(Order.id == order_id):
 
