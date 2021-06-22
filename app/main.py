@@ -36,7 +36,7 @@ def homeView():
                         distancia = distance(session['user_cep'], provider.cep)
                         provider.distance = distancia
                         starRounded = int(provider.rating)
-                return render_template('components/providerslist.html', providers=providers, starRounded=starRounded)
+                return render_template('components/providersList.html', providers=providers, starRounded=starRounded)
 
             
 @app.route("/user/provider/<id>")
@@ -49,7 +49,7 @@ def provider(id):
         else:        
                 from app.scripts.daoProvider import fetchProvider
                 provider = fetchProvider()
-                return render_template('components/providerslist.html', providers=provider)
+                return render_template('components/providersList.html', providers=provider)
 
 @app.route("/user/services/<id>")
 def service(id):
@@ -67,7 +67,7 @@ def service(id):
                 distancia = distance(session['user_cep'], provider.cep)
                 provider.distance = distancia
                 starRounded = int(provider.rating)
-                return render_template('components/serviceslist.html', services=services, provider=provider, starRounded=starRounded)
+                return render_template('components/servicesList.html', services=services, provider=provider, starRounded=starRounded)
 
 
 @app.route("/user/orders/")
@@ -159,17 +159,13 @@ def logout():
                 session.clear()
                 return redirect(url_for('homeViewProvider'))
 
-## BEGIN ERROR AND ROUTE HANDLING
-@app.errorhandler(404)
-def page_not_found(e):
-    # note that we set the 404 status explicitly
-    return render_template('components/404.html'), 404
-
+## END USER ROUTES
+##
 ## BEGIN PROVIDER ROUTES AND FUNCTION USAGE
 @app.route('/provider/login', methods = ['GET', 'POST'])
 def loginProvider():
         if request.method == 'GET':
-                return render_template('components/loginprovider.html')
+                return render_template('components/loginProvider.html')
         elif request.method == 'POST':
                 try:
                         from app.scripts.daoProvider import loginProvider
@@ -221,9 +217,17 @@ def updateOrderProvider():
                         flash('Erro ao atualizar pedido. Tente novamente em breve')
                         return redirect(url_for("ordersProvider"))
 
+## END PROVIDER ROUTES
+##
+## BEGIN UTILS AND ERROR HANDLING
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('components/404.html'), 404
+
 @app.route("/demo")
 def demo():
         return "This should be the demo."
          
-
 
