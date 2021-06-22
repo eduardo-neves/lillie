@@ -118,6 +118,7 @@ def checkout(id):
 def checkout_processing():
         try:
                 request.form != None
+                print(request.form)
         except:
                 return redirect(url_for('homeView'))
         else:

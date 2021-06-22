@@ -1,4 +1,5 @@
 from sqlalchemy.sql.expression import select, insert
+from sqlalchemy import desc
 from datetime import datetime
 from . models.database.declarative import Base, Session, Engine
 from . models.order import Order
@@ -29,7 +30,7 @@ def fetchOrdersProvider(provider_id):
 
     orders = []
     session = Session()
-    stmt = select(Order, Service, User).where(Order.provider_id==provider_id, Order.service_id==Service.id, Order.user_id==User.id).order_by(Order.id)
+    stmt = select(Order, Service, User).where(Order.provider_id==provider_id, Order.service_id==Service.id, Order.user_id==User.id).order_by(desc(Order.id))
 
     for result in session.execute(stmt):
         orders.append(result)
@@ -40,7 +41,7 @@ def fetchOrdersUser(user_id):
 
     orders = []
     session = Session()
-    stmt = select(Order, Service, Service_provider).where(Order.user_id==user_id, Order.service_id==Service.id, Order.provider_id==Service_provider.id).order_by(Order.id)
+    stmt = select(Order, Service, Service_provider).where(Order.user_id==user_id, Order.service_id==Service.id, Order.provider_id==Service_provider.id).order_by(desc(Order.id))
 
     for result in session.execute(stmt):
         orders.append(result)

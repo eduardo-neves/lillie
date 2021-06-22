@@ -54,6 +54,7 @@ Checkout
                         <form action = "/user/checkout/processing" method="POST">
                             <input type="hidden" name="provider_id" value="{{provider.id}}">
                             <input type="hidden" name="service_id" value="{{service.id}}">
+                            <input type="hidden" name="delivery" value=False>
                             {% if service.delivery %}
                             <input class="form-check-input" type="checkbox" id="delivery" value=True name="delivery">
                             <label class="form-check-label" for="delivery">
