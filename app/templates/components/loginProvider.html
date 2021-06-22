@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Provider login{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+  <form action = "/provider/login" method="POST">
+    <div class="form-floating mb-3">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for message in messages %}
+            <h5 class="text-danger">{{ message }}</h5>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      <input type="email" name="user_email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" name="user_password" class="form-control" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">Password</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Entrar</button>
+  </form>
+{% endblock %}

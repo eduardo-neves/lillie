@@ -1,0 +1,93 @@
+{% extends 'baseProvider.html' %}
+{% block title %}
+Pedidos - Provedor
+{% endblock %}
+{% block content %}
+    <div class="container-sm">
+        <div class="accordion-flush" id="accordionOrders">
+            <h1 class="mb-3 mt-3">
+                Pedidos
+                {% for message in messages %}
+                    <h5 class="text">{{ message }}</h5>
+                {% endfor %}
+            </h1>
+            {% for order in order_data %}
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-heading{{order.Order.id}}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{order.Order.id}}" aria-expanded="true" aria-controls="flush-collapse{{order.Order.id}}">
+                  Pedido #{{order.Order.id}}<small class="text-muted" id="orderStatus">{{status_text[order.Order.status]}}</small>
+                </button>
+              </h2>
+              <div id="flush-collapse{{order.Order.id}}" class="accordion-collapse collapse" aria-labelledby="heading{{order.Order.id}}" data-bs-parent="#accordionOrders">
+                <div class="accordion-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                          <p class="form-label">Cliente:</p>
+                          <small class="text-muted">{{order.User.name}}</small>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="form-label">Endereço:</p>
+                            <small class="text-muted">{{order.User.address}}</small>
+                            {% if order.User.address2 %}
+                            <small class="text-muted">, {{order.User.address2}}</small>
+                            {% endif %}
+                            <br>
+                            <small class="text-muted">{{order.User.cep}}</small>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="form-label">Contato:</p>
+                            <small class="text-muted">{{order.User.email}}</small>
+                            <br>
+                            <small class="text-muted">{{order.User.phone}}</small>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="form-label">Serviço:</p>
+                            <small class="text-muted">{{order.Service.name}}</small>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="form-label">Leva & Entrega:</p>
+                                {% if order.Order.delivery %}
+                                    <small class="text-muted">Sim</small>
+                                {% else %}
+                                    <small class="text-muted">Não</small>
+                                {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                          <p class="form-label">Valor:</p>
+                          <small class="text-muted">{{order.Service.value}}</small>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="form-label">Solicitado em:</p>
+                            <small class="text-muted">{{order.Order.placed_on}}</small>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="form-label">Atualizado em:</p>
+                            <small class="text-muted">{{order.Order.updated_on}}</small>
+                        </div>
+                    </div>
+                    {% if order.Order.status != 0 and order.Order.status != 2%}
+                    <div class="d-flex">
+                        <form action="/provider/updateorder" method="post" class="mt-3">
+                            <select class="form-select mt-3 mb-3" aria-label="Default select example" name="status">
+                                {% for status in status_text %}
+                                    {% if loop.index0 != 0 and loop.index0 != 1 %}
+                                        {% if loop.index0 == 4 or loop.index0 == 5 and order.Order.delivery %}
+                                            <option value="{{ loop.index0 }}">{{ status }}</option>
+                                        {% else %}
+                                            <option value="{{ loop.index0 }}">{{ status }}</option>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <input type="hidden" value={{order.Order.id}} name="order_id">
+                        <button class="btn" type="submit">Atualizar</button>
+                        </form>
+                    </div>
+                    {%endif%}
+                </div>
+              </div>
+            </div>
+            {% endfor %}     
+        </div>
+    </div>
+{% endblock %}

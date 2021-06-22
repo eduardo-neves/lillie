@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}
+Checkout
+{% endblock %}
+{% block content %}
+<div class="container-sm">
+    <h1 class="mb-3 mt-3">
+        Checkout
+        {% for message in messages %}
+            <h5 class="text">{{ message }}</h5>
+        {% endfor %}
+    </h1>
+    <div class="card mb-3">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ url_for('static', filename='images/stock.jpg')}}" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                <h4 class="card-title mt-3">{{ provider.name }}</h4>
+                <p class="card-text">
+                    {{provider.rating}}
+                    {% for star in range(starRounded) %}
+                        ★
+                    {% endfor %}
+                    <small class="text-muted" style="margin-left: 10px;">{{ provider.distance }}</small>
+                </p>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <p class="form-label">Endereço:</p>
+                        <small class="text-muted">{{provider.address}}</small>
+                        {% if provider.address2 %}
+                        <small class="text-muted">, {{provider.address2}}</small>
+                        {% endif %}
+                        <br>
+                        <small class="text-muted">{{provider.cep}}</small>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-label">Contato:</p>
+                        <small class="text-muted">{{provider.email}}</small>
+                        <br>
+                        <small class="text-muted">{{provider.phone}}</small>
+                    </div>
+                    <hr>
+                    <div class="col-md-4">
+                        <p class="form-label">Serviço:</p>
+                        <small class="text-muted">{{service.name}}</small>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-label">Valor:</p>
+                        <small class="text-muted">{{service.value}}</small>
+                    </div>
+                    <div class="col-md-4">
+                        <form action = "/user/checkout/processing" method="POST">
+                            <input type="hidden" name="provider_id" value="{{provider.id}}">
+                            <input type="hidden" name="service_id" value="{{service.id}}">
+                            {% if service.delivery %}
+                            <input class="form-check-input" type="checkbox" id="delivery" value=True name="delivery">
+                            <label class="form-check-label" for="delivery">
+                                Leva & Entrega
+                            </label>
+                            {% else %}
+                            <input class="form-check-input" type="checkbox" id="delivery" name="delivery" disabled>
+                            <label class="form-check-label" for="delivery">
+                                Leva & Entrega
+                            </label>
+                            {% endif %}
+                    </div>
+                </div>      
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col text-center">
+        <button class="btn" type="submit">Confirmar pedido</button>
+    </div>
+</form>
+</div>
+{% endblock %}
+
