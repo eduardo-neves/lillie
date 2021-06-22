@@ -228,6 +228,7 @@ def page_not_found(e):
 
 @app.route("/demo")
 def demo():
-        return "This should be the demo."
-         
-
+        session['user_email'] = "example@example.com" 
+        session['user_id'] = 1
+        session['user_cep'] = "88056300"
+        return redirect(url_for("homeView"))
