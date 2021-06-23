@@ -43,6 +43,13 @@ UPLOAD_FOLDER=app/content/static
 ALLOWED_EXTENSIONS={'png', 'jpg', 'jpeg'}
 ```
 
+Execute o *app/scripts/createDatabaseAssests.py* para que as estruturas relacionais dos modelos sejam criadas no banco de dados previamente definido:
+
+```
+python app/scripts/createDatabaseAssests.py
+$
+```
+
 Por fim, crie um servidor local por via do *wsgi.py*:
 
 ```
