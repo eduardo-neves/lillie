@@ -94,7 +94,21 @@ def updateOrder():
 
 @app.route("/user/profile")
 def profile():
-        return render_template('components/profileUser.html', test="This is where the profile is going to be.") 
+        from app.scripts.daoUser import fetchUser
+        user = fetchUser(session['user_email'])
+        return render_template('components/profileUser.html', test="This is where the profile is going to be.", user=user) 
+
+@app.route("/user/update", methods = ['GET', 'POST'])
+def updateUser():
+
+        if request.method != "POST":
+                return redirect(url_for("profile"))
+        else:
+                from app.scripts.daoUser import fetchUser
+                user = fetchUser(session['user_email'])
+                return render_template('components/profileUser.html', test="This is where the profile is going to be.", user=user) 
+
+
 
 @app.route("/user/checkout/<id>")
 def checkout(id):
