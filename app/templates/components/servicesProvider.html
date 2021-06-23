@@ -1,0 +1,61 @@
+{% extends 'baseProvider.html' %}
+{% block title %}
+Serviços - Provedor
+{% endblock %}
+{% block content %}
+<div class="accordion-flush" id="accordionOrders">
+    <h1 class="mb-3 mt-3">Serviços</h1>
+    {% for service in services %}
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-heading{{service.id}}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{service.id}}" aria-expanded="true" aria-controls="flush-collapse{{service.id}}">
+            {{service.name}}<small class="text-muted ml-4" style="margin-left: 10px;"> R$ {{service.value}}</small>
+            </button>
+        </h2>
+        <div id="flush-collapse{{service.id}}" class="accordion-collapse collapse" aria-labelledby="heading{{service.id}}" data-bs-parent="#accordionOrders">
+            <div class="accordion-body">
+                <form action="/provider/updateservice" method="POST">
+                    <div class="row g-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="serviceName" name="serviceName" value="{{ service.name }}">
+                            <label class="form-label" for="serviceName">Nome</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="serviceValue" name="serviceValue" value="{{ service.value }}">
+                            <label class="form-label" for="serviceValue">Valor (R$)</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="serviceDescription" class="form-label">Detalhes</label>
+                            <textarea class="form-control" id="serviceDescription" name="serviceDescription" rows="3"> {{ service.description }} </textarea>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            {% if service.delivery == True %}
+                            <input class="form-check-input" type="checkbox" id="delivery" name="serviceDelivery" checked>
+                            <label class="form-check-label" for="delivery">
+                                Leva & Entrega
+                            </label>
+                            {% else %}
+                            <input class="form-check-input" type="checkbox" id="delivery" name="serviceDelivery">
+                            <label class="form-check-label" for="delivery">
+                                Leva & Entrega
+                            </label>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <input type="hidden" name="serviceId" value="{{service.id}}">
+                        <div class="col-md-auto" style="margin-top: 10px;">
+                            <button class="btn" type="submit">Atualizar</button>
+                        </div>
+                    </form>
+                    <form class="col-md-auto" action="/provider/deleteservice" method="POST" style="margin-top: 10px;">
+                        <input type="hidden" name="serviceId" value="{{service.id}}">
+                        <button class="btn" id="btnremove" type="submit">Remover</button>
+                    </form>
+                    </div>        
+            </div>
+        </div>       
+    </div>
+    {% endfor %}     
+</div>
+{% endblock %}
