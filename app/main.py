@@ -17,7 +17,7 @@ app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER')
 ## BEGIN USER ROUTES AND FUNCTION USAGE
 @app.route("/")
 def index():
-       return render_template('index.html')
+       return redirect(url_for("demo"))
 
 @app.route("/user")
 def homeView():
@@ -243,4 +243,6 @@ def demo():
         session['user_email'] = "example@example.com" 
         session['user_id'] = 1
         session['user_cep'] = "88056300"
+        session['provider_id'] = 1
+        session['provider_email'] = "example_provider.com"
         return redirect(url_for("homeView"))
